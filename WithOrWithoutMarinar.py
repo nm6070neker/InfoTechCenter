@@ -1,23 +1,46 @@
-# Gasoline Branch
-
 import random
 
-QUARTER_TANK_THRESHOLD = 25  # percent
-
-def get_gas_level():
+def get_nearby_gas_stations():
     """
-    Simulates reading gas level from a car.
+    Simulates nearby gas stations and gas prices.
+    Prices are per gallon.
     """
-    return random.randint(0, 100)
+    stations = [
+        "Shell",
+        "Chevron",
+        "BP",
+        "Exxon",
+        "Mobil",
+        "Circle K",
+        "Speedway"
+    ]
 
-def check_gas_level():
-    gas_level = get_gas_level()
-    print(f"Current fuel level: {gas_level}%")
+    gas_stations = []
 
-    if gas_level <= QUARTER_TANK_THRESHOLD:
-        print("⛽ WARNING: Fuel is at or below 1/4 tank. Please refuel soon.")
-    else:
-        print("✅ Fuel level is above 1/4 tank.")
+    for station in stations:
+        price = round(random.uniform(3.10, 4.50), 2)
+        gas_stations.append({
+            "name": station,
+            "price": price
+        })
+
+    return gas_stations
+
+def display_gas_stations(stations):
+    print("\n⛽ Nearby Gas Stations:")
+    for station in stations:
+        print(f"- {station['name']}: ${station['price']} per gallon")
+
+def find_cheapest_station(stations):
+    cheapest = min(stations, key=lambda x: x["price"])
+    return cheapest
 
 # Run once
-check_gas_level()
+stations = get_nearby_gas_stations()
+display_gas_stations(stations)
+
+cheapest = find_cheapest_station(stations)
+print(
+    f"\n💰 Cheapest Gas Station Nearby: "
+    f"{cheapest['name']} at ${cheapest['price']} per gallon"
+)
