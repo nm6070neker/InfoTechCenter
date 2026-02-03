@@ -1,10 +1,32 @@
+#Gasoline Branch
+
 import random
 
+# -----------------------------
+# GAS LEVEL SETTINGS
+# -----------------------------
+QUARTER_TANK_THRESHOLD = 25  # percent
+
+def get_gas_level():
+    """Simulates reading the car's gas level."""
+    return random.randint(0, 100)
+
+def check_gas_level():
+    gas_level = get_gas_level()
+    print(f"\n🚗 Current fuel level: {gas_level}%")
+
+    if gas_level <= QUARTER_TANK_THRESHOLD:
+        print("⛽ WARNING: Fuel is at or below 1/4 tank!")
+        return True
+    else:
+        print("✅ Fuel level is above 1/4 tank.")
+        return False
+
+# -----------------------------
+# GAS STATION SYSTEM
+# -----------------------------
 def get_nearby_gas_stations():
-    """
-    Simulates nearby gas stations, prices, open/closed status,
-    and whether they have slurpees and snacks.
-    """
+    """Simulates nearby gas stations and their details."""
     stations = [
         "Shell",
         "Chevron",
@@ -29,18 +51,18 @@ def get_nearby_gas_stations():
     return gas_stations
 
 def display_gas_stations(stations):
-    print("\n⛽ Nearby Gas Stations:")
-    for station in stations:
-        status = "OPEN ✅" if station["open"] else "CLOSED ❌"
-        slurpee = "Slurpees 🥤" if station["slurpees"] else "No Slurpees"
-        snacks = "Snacks 🍿" if station["snacks"] else "No Snacks"
+    print("\n📍 Nearby Gas Stations:")
+    for s in stations:
+        status = "OPEN ✅" if s["open"] else "CLOSED ❌"
+        slurpee = "Slurpees 🥤" if s["slurpees"] else "No Slurpees"
+        snacks = "Snacks 🍿" if s["snacks"] else "No Snacks"
 
         print(
-            f"- {station['name']}: "
-            f"${station['price']} | {status} | {slurpee} | {snacks}"
+            f"- {s['name']}: "
+            f"${s['price']} | {status} | {slurpee} | {snacks}"
         )
 
-def find_best_station(stations):
+def find_cheapest_open_station(stations):
     open_stations = [s for s in stations if s["open"]]
 
     if not open_stations:
@@ -48,16 +70,26 @@ def find_best_station(stations):
 
     return min(open_stations, key=lambda x: x["price"])
 
-# Run once
-stations = get_nearby_gas_stations()
-display_gas_stations(stations)
+# -----------------------------
+# MAIN PROGRAM
+# -----------------------------
+low_gas = check_gas_level()
 
-best = find_best_station(stations)
+if low_gas:
+    stations = get_nearby_gas_stations()
+    display_gas_stations(stations)
 
-if best:
-    print(
-        f"\n⭐ Best OPEN Gas Station: {best['name']} "
-        f"(${best['price']} per gallon)"
-    )
+    best_station = find_cheapest_open_station(stations)
+
+    if best_station:
+        print(
+            f"\n⭐ Recommended Stop:\n"
+            f"{best_station['name']} — ${best_station['price']} per gallon\n"
+            f"Open ✅ | "
+            f"{'Slurpees 🥤' if best_station['slurpees'] else 'No Slurpees'} | "
+            f"{'Snacks 🍿' if best_station['snacks'] else 'No Snacks'}"
+        )
+    else:
+        print("\n❌ No gas stations are currently open nearby.")
 else:
-    print("\n❌ No gas stations are currently open nearby.")
+    print("\n🚘 No need to search for gas stations right now.")
