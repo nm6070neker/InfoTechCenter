@@ -2,7 +2,8 @@ import random
 
 def get_nearby_gas_stations():
     """
-    Simulates nearby gas stations, prices, and open/closed status.
+    Simulates nearby gas stations, prices, open/closed status,
+    and whether they have slurpees and snacks.
     """
     stations = [
         "Shell",
@@ -20,7 +21,9 @@ def get_nearby_gas_stations():
         gas_stations.append({
             "name": station,
             "price": round(random.uniform(3.10, 4.50), 2),
-            "open": random.choice([True, False])
+            "open": random.choice([True, False]),
+            "slurpees": random.choice([True, False]),
+            "snacks": random.choice([True, False])
         })
 
     return gas_stations
@@ -29,12 +32,15 @@ def display_gas_stations(stations):
     print("\n⛽ Nearby Gas Stations:")
     for station in stations:
         status = "OPEN ✅" if station["open"] else "CLOSED ❌"
+        slurpee = "Slurpees 🥤" if station["slurpees"] else "No Slurpees"
+        snacks = "Snacks 🍿" if station["snacks"] else "No Snacks"
+
         print(
             f"- {station['name']}: "
-            f"${station['price']} per gallon | {status}"
+            f"${station['price']} | {status} | {slurpee} | {snacks}"
         )
 
-def find_cheapest_open_station(stations):
+def find_best_station(stations):
     open_stations = [s for s in stations if s["open"]]
 
     if not open_stations:
@@ -46,12 +52,12 @@ def find_cheapest_open_station(stations):
 stations = get_nearby_gas_stations()
 display_gas_stations(stations)
 
-cheapest_open = find_cheapest_open_station(stations)
+best = find_best_station(stations)
 
-if cheapest_open:
+if best:
     print(
-        f"\n⭐ Cheapest OPEN Gas Station: "
-        f"{cheapest_open['name']} at ${cheapest_open['price']} per gallon"
+        f"\n⭐ Best OPEN Gas Station: {best['name']} "
+        f"(${best['price']} per gallon)"
     )
 else:
     print("\n❌ No gas stations are currently open nearby.")
