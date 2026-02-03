@@ -44,6 +44,10 @@ while x != 20:
     if x == 20:
         print(f"\n{GREEN}Operating System Booted Up - Retina Scanned - Access Granted{RESET}")
 
+
+
+#Weather Branch
+
 import random
 import time
 
@@ -164,6 +168,8 @@ elif level == "Danger":
     # Simulate alarm beeps using a timed loop
     for _ in range(3):
         time.sleep(0.3)
+
+
 
 #Gasoline Branch
 
